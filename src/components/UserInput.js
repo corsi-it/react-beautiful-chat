@@ -95,9 +95,10 @@ class UserInput extends Component {
             onKeyDown={this.handleKey}
             onKeyPress={this.handleKeyPress}
             contentEditable="true"
+            suppressContentEditableWarning="true"
             placeholder="Write a reply..."
             className="sc-user-input--text"
-          >
+          >{this.props.typing || ''}
           </div>
           <div className="sc-user-input--buttons">
             <div className="sc-user-input--button"></div>
@@ -123,6 +124,7 @@ UserInput.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   showEmoji: PropTypes.bool,
   showFile: PropTypes.bool,
+  typing: PropTypes.string,
   onKeyPress: PropTypes.func
 }
 

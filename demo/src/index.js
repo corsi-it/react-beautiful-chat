@@ -81,6 +81,7 @@ class Demo extends Component {
         onDelete={this.onDelete}
         showEmoji
         showFile
+        typing='... typing a message for you ...'
       />
       <div style={{height: 200}} />
       <Footer />
