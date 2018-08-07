@@ -23,12 +23,16 @@ class Message extends Component {
       "sc-message--content",
       (this.props.message.author === "me" ? "sent" : "received")
     ];
+    let authorAvatarUrl = this.props.message.author_avatar || chatIconUrl
     return (
       <div className="sc-message">
         <div className={contentClassList.join(" ")}>
-          <div className="sc-message--avatar" style={{
-            backgroundImage: `url(${chatIconUrl})`
-          }}></div>
+          <div
+            className="sc-message--avatar"
+            title={this.props.message.author}
+            style={{
+              backgroundImage: `url(${authorAvatarUrl})`
+            }} />
           {this._renderMessageOfType(this.props.message.type)}
         </div>
       </div>)

@@ -1,7 +1,20 @@
 import React, { Component } from 'react'
 
 class TestArea extends Component {
+  state = { avatar: null }
+  onChange = (e) => {
+    e.preventDefault()
+    const avatar = e.target.files ? e.target.files[0] : e.dataTransfer.files[0]
+    if (avatar) {
+      const reader = new FileReader();
+      reader.onload = ({ target: { result } }) => {
+        this.setState({ avatar: result })
+      };
+      reader.readAsDataURL(avatar);
+    }
+  }
   render () {
+    const { avatar } = this.state
     return (
       <div className="demo-test-area--wrapper">
         <div className="demo-test-area--title">
@@ -10,7 +23,8 @@ class TestArea extends Component {
         </div>
         <form className="demo-test-area" onSubmit={(e)=> {
             e.preventDefault();
-            this.props.onMessage(this.textArea.value);
+            console.log('HERE');
+            this.props.onMessage(this.textArea.value, avatar);
             this.textArea.value = '';
           }}>
           <div className="demo-test-area--preamble">Test the chat window by sending a message:</div>
@@ -19,6 +33,13 @@ class TestArea extends Component {
             className="demo-test-area--text"
             placeholder="Write a test message...."
           />
+          <label>
+            Choose avatar:
+            {avatar && <img src={avatar} className='sc-message--avatar' style={{'width': 30, 'float': 'left'}} />}
+            <input
+              className="hideDefault" id='avatar' type="file" onChange={this.onChange}
+            />
+          </label>
           <button className="demo-test-area--button"> Send Message! </button>
         </form>
         <p className="demo-test-area--info">

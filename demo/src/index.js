@@ -29,7 +29,7 @@ class Demo extends Component {
     this.lastId += 1
   }
 
-  _sendMessage(text) {
+  _sendMessage(text, avatar) {
     if (text.length > 0) {
       const newMessagesCount = this.state.isOpen ? this.state.newMessagesCount : this.state.newMessagesCount + 1
       this.setState({
@@ -38,7 +38,8 @@ class Demo extends Component {
           id: this.lastId + 1,
           author: 'them',
           type: 'text',
-          data: { text }
+          data: { text },
+          author_avatar: avatar
         }]
       })
       this.lastId += 1
