@@ -56,6 +56,7 @@ var Launcher = function (_Component) {
         onClose: this.handleClick.bind(this),
         showEmoji: this.props.showEmoji,
         showFile: this.props.showFile,
+        typing: this.props.typing,
         onKeyPress: this.props.onKeyPress,
         onKeyPressDebounce: this.props.onKeyPressDebounce,
         onDelete: this.props.onDelete
@@ -86,6 +87,7 @@ Launcher.propTypes = process.env.NODE_ENV !== "production" ? {
   messageList: PropTypes.arrayOf(PropTypes.object),
   showEmoji: PropTypes.bool,
   showFile: PropTypes.bool,
+  typing: PropTypes.string,
   onKeyPress: PropTypes.func,
   onDelete: PropTypes.func
 } : {};

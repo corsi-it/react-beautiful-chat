@@ -32,14 +32,18 @@ var Message = function (_Component) {
 
   Message.prototype.render = function render() {
     var contentClassList = ["sc-message--content", this.props.message.author === "me" ? "sent" : "received"];
+    var authorAvatarUrl = this.props.message.author_avatar || chatIconUrl;
     return React.createElement(
       'div',
       { className: 'sc-message' },
       React.createElement(
         'div',
         { className: contentClassList.join(" ") },
-        React.createElement('div', { className: 'sc-message--avatar', style: {
-            backgroundImage: 'url(' + chatIconUrl + ')'
+        React.createElement('div', {
+          className: 'sc-message--avatar',
+          title: this.props.message.author,
+          style: {
+            backgroundImage: 'url(' + authorAvatarUrl + ')'
           } }),
         this._renderMessageOfType(this.props.message.type)
       )

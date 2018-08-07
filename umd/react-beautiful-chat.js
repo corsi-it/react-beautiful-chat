@@ -1,5 +1,5 @@
 /*!
- * react-beautiful-chat v1.0.0 - https://mattmezza.github.io/react-beautiful-chat/
+ * react-beautiful-chat v1.1.0 - https://mattmezza.github.io/react-beautiful-chat/
  * MIT Licensed
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -9969,7 +9969,9 @@ var ChatWindow = function (_Component) {
         showEmoji: this.props.showEmoji,
         onSubmit: this.onUserInputSubmit,
         showFile: this.props.showFile,
-        onKeyPress: this.props.onKeyPress })
+        onKeyPress: this.props.onKeyPress,
+        typing: this.props.typing
+      })
     );
   };
 
@@ -9977,9 +9979,19 @@ var ChatWindow = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
 
 ChatWindow.propTypes = {
+  agentProfile: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
+    teamName: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
+    imageUrl: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string
+  }),
+  isOpen: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
+  messageList: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.object),
   showEmoji: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
   showFile: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-  onKeyPress: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func
+  typing: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
+  onClose: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
+  onDelete: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
+  onKeyPress: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
+  onUserInputSubmit: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (ChatWindow);
@@ -10108,6 +10120,7 @@ var Launcher = function (_Component) {
         onClose: this.handleClick.bind(this),
         showEmoji: this.props.showEmoji,
         showFile: this.props.showFile,
+        typing: this.props.typing,
         onKeyPress: this.props.onKeyPress,
         onKeyPressDebounce: this.props.onKeyPressDebounce,
         onDelete: this.props.onDelete
@@ -10138,6 +10151,7 @@ Launcher.propTypes = {
   messageList: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.object),
   showEmoji: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
   showFile: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
+  typing: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
   onKeyPress: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   onDelete: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func
 };
@@ -10362,14 +10376,18 @@ var Message = function (_Component) {
 
   Message.prototype.render = function render() {
     var contentClassList = ["sc-message--content", this.props.message.author === "me" ? "sent" : "received"];
+    var authorAvatarUrl = this.props.message.author_avatar || __WEBPACK_IMPORTED_MODULE_4__assets_chat_icon_svg___default.a;
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'sc-message' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: contentClassList.join(" ") },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'sc-message--avatar', style: {
-            backgroundImage: 'url(' + __WEBPACK_IMPORTED_MODULE_4__assets_chat_icon_svg___default.a + ')'
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', {
+          className: 'sc-message--avatar',
+          title: this.props.message.author,
+          style: {
+            backgroundImage: 'url(' + authorAvatarUrl + ')'
           } }),
         this._renderMessageOfType(this.props.message.type)
       )
@@ -10515,24 +10533,29 @@ var UserInput = function (_Component) {
       __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         'form',
         { className: 'sc-user-input ' + (this.state.inputActive ? 'active' : '') },
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', {
-          role: 'button',
-          tabIndex: '0',
-          onFocus: function onFocus() {
-            _this2.setState({ inputActive: true });
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+          'div',
+          {
+            role: 'button',
+            tabIndex: '0',
+            onFocus: function onFocus() {
+              _this2.setState({ inputActive: true });
+            },
+            onBlur: function onBlur() {
+              _this2.setState({ inputActive: false });
+            },
+            ref: function ref(e) {
+              _this2.userInput = e;
+            },
+            onKeyDown: this.handleKey,
+            onKeyPress: this.handleKeyPress,
+            contentEditable: 'true',
+            suppressContentEditableWarning: 'true',
+            placeholder: 'Write a reply...',
+            className: 'sc-user-input--text'
           },
-          onBlur: function onBlur() {
-            _this2.setState({ inputActive: false });
-          },
-          ref: function ref(e) {
-            _this2.userInput = e;
-          },
-          onKeyDown: this.handleKey,
-          onKeyPress: this.handleKeyPress,
-          contentEditable: 'true',
-          placeholder: 'Write a reply...',
-          className: 'sc-user-input--text'
-        }),
+          this.props.typing || ''
+        ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
           'div',
           { className: 'sc-user-input--buttons' },
@@ -10566,6 +10589,7 @@ UserInput.propTypes = {
   onSubmit: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func.isRequired,
   showEmoji: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
   showFile: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
+  typing: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
   onKeyPress: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func
 };
 

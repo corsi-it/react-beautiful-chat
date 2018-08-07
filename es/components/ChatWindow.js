@@ -49,7 +49,9 @@ var ChatWindow = function (_Component) {
         showEmoji: this.props.showEmoji,
         onSubmit: this.onUserInputSubmit,
         showFile: this.props.showFile,
-        onKeyPress: this.props.onKeyPress })
+        onKeyPress: this.props.onKeyPress,
+        typing: this.props.typing
+      })
     );
   };
 
@@ -57,9 +59,19 @@ var ChatWindow = function (_Component) {
 }(Component);
 
 ChatWindow.propTypes = process.env.NODE_ENV !== "production" ? {
+  agentProfile: PropTypes.shape({
+    teamName: PropTypes.string,
+    imageUrl: PropTypes.string
+  }),
+  isOpen: PropTypes.bool,
+  messageList: PropTypes.arrayOf(PropTypes.object),
   showEmoji: PropTypes.bool,
   showFile: PropTypes.bool,
-  onKeyPress: PropTypes.func
+  typing: PropTypes.string,
+  onClose: PropTypes.func,
+  onDelete: PropTypes.func,
+  onKeyPress: PropTypes.func,
+  onUserInputSubmit: PropTypes.func
 } : {};
 
 export default ChatWindow;
