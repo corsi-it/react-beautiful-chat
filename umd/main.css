@@ -478,6 +478,10 @@
   text-align: center;
 }
 
+.sc-message--content.received .sc-message--meta {
+  color: #263238;
+}
+
 @media (max-width: 450px) {
   .sc-message {
     width: 80%;
