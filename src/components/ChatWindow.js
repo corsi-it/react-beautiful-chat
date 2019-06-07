@@ -22,9 +22,7 @@ class ChatWindow extends Component {
     return (
       <div className={classList.join(' ')}>
         <Header
-          teamName={this.props.agentProfile.teamName}
-          imageUrl={this.props.agentProfile.imageUrl}
-          onTeamClick={this.props.onTeamClick}
+          {...this.props.agentProfile}
           onClose={this.props.onClose}
         />
         <MessageList
@@ -50,7 +48,8 @@ class ChatWindow extends Component {
 ChatWindow.propTypes = {
   agentProfile: PropTypes.shape({
     teamName: PropTypes.string,
-    imageUrl: PropTypes.string
+    imageUrl: PropTypes.string,
+    teamUrl: PropTypes.string
   }),
   isOpen: PropTypes.bool,
   readOnly: PropTypes.bool,
@@ -60,7 +59,6 @@ ChatWindow.propTypes = {
   showFile: PropTypes.bool,
   typing: PropTypes.string,
   buttons: PropTypes.arrayOf(PropTypes.func),
-  onTeamClick: PropTypes.func,
   onClose: PropTypes.func,
   onDelete: PropTypes.func,
   onKeyPress: PropTypes.func,

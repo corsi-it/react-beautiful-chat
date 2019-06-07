@@ -41,7 +41,7 @@ class TestArea extends Component {
             />
           </label>
           <label>
-            Alert text for team click in the header (onTeamClick):
+            Url for team click in the header (teamUrl):
             <input
               className="hideDefault" id='teamAlert' type="text" onChange={(e) => this.props.onTeamTextChange(e.target.value)}
             />

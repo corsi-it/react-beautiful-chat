@@ -25,7 +25,12 @@
   border-radius: 5px;
 }
 
-.sc-header--team-name.clickable:hover {
+a.sc-header--team-name {
+  color: white;
+  text-decoration: none;
+}
+
+a.sc-header--team-name:hover {
   background: #4882ed;
   cursor: pointer;
 }

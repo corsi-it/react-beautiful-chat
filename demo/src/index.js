@@ -65,19 +65,20 @@ class Demo extends Component {
   }
 
   render() {
-    const { isOpen, teamText, readOnly, mute } = this.state
+    const { isOpen, teamUrl, readOnly, mute } = this.state
     return <div>
       <Header />
       <TestArea
         onMessage={this._sendMessage.bind(this)}
-        onTeamTextChange={(text) => this.setState({ teamText: text })}
+        onTeamTextChange={(text) => this.setState({ teamUrl: text })}
         onReadOnlyChange={(value) => this.setState({ readOnly: value })}
         onMuteChange={(value) => this.setState({ mute: value })}
       />
       <Launcher
         agentProfile={{
           teamName: 'react-beautiful-chat',
-          imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+          imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png',
+          teamUrl: teamUrl
         }}
         onMessageWasReceived={this._onMessageWasReceived.bind(this)}
         mute={mute}
@@ -91,7 +92,6 @@ class Demo extends Component {
             return ['last']
           }
         }}
-        onTeamClick={teamText ? () => window.alert(teamText) : null}
         newMessagesCount={this.state.newMessagesCount}
         handleClick={this._handleClick.bind(this)}
         isOpen={isOpen}
