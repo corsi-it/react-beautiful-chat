@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import chatIconUrl from './../../assets/chat-icon.svg';
+import React from 'react';
 
 var TextMessage = function TextMessage(props) {
   var meta = props.message.data.meta || null;
@@ -8,7 +7,7 @@ var TextMessage = function TextMessage(props) {
   return React.createElement(
     'div',
     { className: 'sc-message--text' },
-    props.message && author === "me" && props.onDelete && React.createElement(
+    props.message && author === 'me' && props.onDelete && React.createElement(
       'button',
       { className: 'delete-message', onClick: function onClick() {
           return props.onDelete(props.message);

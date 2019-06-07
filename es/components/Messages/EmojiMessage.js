@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 var EmojiMessage = function EmojiMessage(props) {
   return React.createElement(
-    "div",
-    { className: "sc-message--emoji" },
+    'div',
+    { className: 'sc-message--emoji' },
     props.data.emoji
   );
 };

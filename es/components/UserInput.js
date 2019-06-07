@@ -6,10 +6,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { render } from 'react-dom';
 import SendIcon from './icons/SendIcon';
 import EmojiIcon from './icons/EmojiIcon';
-import EmojiPicker from './emoji-picker/EmojiPicker';
 import FileIcons from './icons/FileIcon';
 import closeIcon from '../assets/close.svg';
 import genericFileIcon from '../assets/file.svg';
@@ -19,71 +17,67 @@ var UserInput = function (_Component) {
   _inherits(UserInput, _Component);
 
   function UserInput() {
+    var _temp, _this, _ret;
+
     _classCallCheck(this, UserInput);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.handleKey = function (event) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
+      inputActive: false,
+      file: null
+    }, _this.handleKey = function (event) {
       if (event.keyCode === 13 && !event.shiftKey) {
         _this._submitText(event);
       }
-    };
-
-    _this.handleKeyPress = _.debounce(function () {
+    }, _this.handleKeyPress = _.debounce(function () {
       _this.props.onKeyPress(_this.userInput.textContent);
-    }, 300, { trailing: true });
-
-    _this.state = {
-      inputActive: false,
-      file: null
-    };
-    return _this;
-  }
-
-  UserInput.prototype._submitText = function _submitText(event) {
-    event.preventDefault();
-    var text = this.userInput.textContent;
-    var file = this.state.file;
-    if (file) {
-      if (text && text.length > 0) {
-        this.props.onSubmit({
-          author: 'me',
-          type: 'file',
-          data: { text: text, file: file }
-        });
-        this.setState({ file: null });
-        this.userInput.innerHTML = '';
+    }, 300, { trailing: true }), _this._submitText = function (event) {
+      event.preventDefault();
+      if (_this.props.readOnly) {
+        return;
+      }
+      var text = _this.userInput.textContent;
+      var file = _this.state.file;
+      if (file) {
+        if (text && text.length > 0) {
+          _this.props.onSubmit({
+            author: 'me',
+            type: 'file',
+            data: { text: text, file: file }
+          });
+          _this.setState({ file: null });
+          _this.userInput.innerHTML = '';
+        } else {
+          _this.props.onSubmit({
+            author: 'me',
+            type: 'file',
+            data: { file: file }
+          });
+          _this.setState({ file: null });
+        }
       } else {
-        this.props.onSubmit({
-          author: 'me',
-          type: 'file',
-          data: { file: file }
-        });
-        this.setState({ file: null });
+        if (text && text.length > 0) {
+          _this.props.onSubmit({
+            author: 'me',
+            type: 'text',
+            data: { text: text }
+          });
+          _this.userInput.innerHTML = '';
+        }
       }
-    } else {
-      if (text && text.length > 0) {
-        this.props.onSubmit({
-          author: 'me',
-          type: 'text',
-          data: { text: text }
-        });
-        this.userInput.innerHTML = '';
-      }
-    }
-  };
-
-  UserInput.prototype._handleEmojiPicked = function _handleEmojiPicked(emoji) {
-    this.props.onSubmit({
-      author: 'me',
-      type: 'emoji',
-      data: { emoji: emoji }
-    });
-  };
-
-  UserInput.prototype._handleFileSubmit = function _handleFileSubmit(file) {
-    this.setState({ file: file });
-  };
+    }, _this._handleEmojiPicked = function (emoji) {
+      _this.props.onSubmit({
+        author: 'me',
+        type: 'emoji',
+        data: { emoji: emoji }
+      });
+    }, _this._handleFileSubmit = function (file) {
+      _this.setState({ file: file });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
 
   UserInput.prototype.render = function render() {
     var _this2 = this;
@@ -127,9 +121,9 @@ var UserInput = function (_Component) {
             },
             onKeyDown: this.handleKey,
             onKeyPress: this.handleKeyPress,
-            contentEditable: 'true',
+            contentEditable: !this.props.readOnly,
             suppressContentEditableWarning: 'true',
-            placeholder: 'Write a reply...',
+            placeholder: this.props.readOnly ? 'Read only' : 'Write a reply...',
             className: 'sc-user-input--text'
           },
           this.props.typing || ''
@@ -137,23 +131,29 @@ var UserInput = function (_Component) {
         React.createElement(
           'div',
           { className: 'sc-user-input--buttons' },
-          React.createElement('div', { className: 'sc-user-input--button' }),
-          React.createElement(
+          this.props.showEmoji && !this.props.readOnly && React.createElement(
             'div',
             { className: 'sc-user-input--button' },
-            this.props.showEmoji && React.createElement(EmojiIcon, { onEmojiPicked: this._handleEmojiPicked.bind(this) })
+            React.createElement(EmojiIcon, { onEmojiPicked: this._handleEmojiPicked })
           ),
-          this.props.showFile && React.createElement(
+          this.props.showFile && !this.props.readOnly && React.createElement(
             'div',
             { className: 'sc-user-input--button' },
             React.createElement(FileIcons, { onChange: function onChange(file) {
                 return _this2._handleFileSubmit(file);
               } })
           ),
+          (this.props.buttons || []).map(function (buttonCreator, ix) {
+            return React.createElement(
+              'div',
+              { className: 'sc-user-input--button', key: ix },
+              buttonCreator(_this2)
+            );
+          }),
           React.createElement(
             'div',
             { className: 'sc-user-input--button' },
-            React.createElement(SendIcon, { onClick: this._submitText.bind(this) })
+            React.createElement(SendIcon, { onClick: this._submitText })
           )
         )
       )
@@ -168,6 +168,7 @@ UserInput.propTypes = process.env.NODE_ENV !== "production" ? {
   showEmoji: PropTypes.bool,
   showFile: PropTypes.bool,
   typing: PropTypes.string,
+  buttons: PropTypes.arrayOf(PropTypes.func),
   onKeyPress: PropTypes.func
 } : {};
 

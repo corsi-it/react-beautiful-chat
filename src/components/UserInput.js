@@ -1,22 +1,16 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { render } from 'react-dom'
 import SendIcon from './icons/SendIcon'
 import EmojiIcon from './icons/EmojiIcon'
-import EmojiPicker from './emoji-picker/EmojiPicker'
 import FileIcons from './icons/FileIcon'
 import closeIcon from '../assets/close.svg'
 import genericFileIcon from '../assets/file.svg'
 import _ from 'lodash'
 
 class UserInput extends Component {
-
-  constructor() {
-    super()
-    this.state = {
-      inputActive: false,
-      file: null
-    }
+  state = {
+    inputActive: false,
+    file: null
   }
 
   handleKey = (event) => {
@@ -27,10 +21,13 @@ class UserInput extends Component {
 
   handleKeyPress = _.debounce(() => {
     this.props.onKeyPress(this.userInput.textContent)
-  }, 300, {trailing: true})
+  }, 300, { trailing: true })
 
-  _submitText(event) {
+  _submitText = (event) => {
     event.preventDefault()
+    if (this.props.readOnly) {
+      return
+    }
     const text = this.userInput.textContent
     const file = this.state.file
     if (file) {
@@ -62,7 +59,7 @@ class UserInput extends Component {
     }
   }
 
-  _handleEmojiPicked(emoji) {
+  _handleEmojiPicked = (emoji) => {
     this.props.onSubmit({
       author: 'me',
       type: 'emoji',
@@ -70,11 +67,11 @@ class UserInput extends Component {
     })
   }
 
-  _handleFileSubmit(file) {
+  _handleFileSubmit = (file) => {
     this.setState({ file })
   }
 
-  render() {
+  render () {
     return (
       <div>
         {
@@ -87,31 +84,37 @@ class UserInput extends Component {
         }
         <form className={`sc-user-input ${(this.state.inputActive ? 'active' : '')}`}>
           <div
-            role="button"
-            tabIndex="0"
+            role='button'
+            tabIndex='0'
             onFocus={() => { this.setState({ inputActive: true }) }}
             onBlur={() => { this.setState({ inputActive: false }) }}
             ref={(e) => { this.userInput = e }}
             onKeyDown={this.handleKey}
             onKeyPress={this.handleKeyPress}
-            contentEditable="true"
-            suppressContentEditableWarning="true"
-            placeholder="Write a reply..."
-            className="sc-user-input--text"
+            contentEditable={!this.props.readOnly}
+            suppressContentEditableWarning='true'
+            placeholder={this.props.readOnly ? 'Read only' : 'Write a reply...'}
+            className='sc-user-input--text'
           >{this.props.typing || ''}
           </div>
-          <div className="sc-user-input--buttons">
-            <div className="sc-user-input--button"></div>
-            <div className="sc-user-input--button">
-              {this.props.showEmoji && <EmojiIcon onEmojiPicked={this._handleEmojiPicked.bind(this)} />}
-            </div>
-            {this.props.showFile &&
-              <div className="sc-user-input--button">
+          <div className='sc-user-input--buttons'>
+            {this.props.showEmoji && !this.props.readOnly &&
+              <div className='sc-user-input--button'>
+                <EmojiIcon onEmojiPicked={this._handleEmojiPicked} />
+              </div>
+            }
+            {this.props.showFile && !this.props.readOnly &&
+              <div className='sc-user-input--button'>
                 <FileIcons onChange={(file) => this._handleFileSubmit(file)} />
               </div>
             }
-            <div className="sc-user-input--button">
-              <SendIcon onClick={this._submitText.bind(this)} />
+            {(this.props.buttons || []).map((buttonCreator, ix) => (
+              <div className='sc-user-input--button' key={ix}>
+                {buttonCreator(this)}
+              </div>
+            ))}
+            <div className='sc-user-input--button'>
+              <SendIcon onClick={this._submitText} />
             </div>
           </div>
         </form>
@@ -125,6 +128,7 @@ UserInput.propTypes = {
   showEmoji: PropTypes.bool,
   showFile: PropTypes.bool,
   typing: PropTypes.string,
+  buttons: PropTypes.arrayOf(PropTypes.func),
   onKeyPress: PropTypes.func
 }
 

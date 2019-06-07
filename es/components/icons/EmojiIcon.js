@@ -4,7 +4,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import EmojiPicker from './../emoji-picker/EmojiPicker';
 
@@ -12,28 +11,27 @@ var EmojiIcon = function (_Component) {
   _inherits(EmojiIcon, _Component);
 
   function EmojiIcon() {
+    var _temp, _this, _ret;
+
     _classCallCheck(this, EmojiIcon);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.state = {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
       isActive: false
-    };
-    return _this;
+    }, _this._handlePickerBlur = function () {
+      _this.setState({
+        isActive: false
+      });
+    }, _this._openPicker = function (e) {
+      e.preventDefault();
+      _this.setState({
+        isActive: !_this.state.isActive
+      });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
-
-  EmojiIcon.prototype._handlePickerBlur = function _handlePickerBlur() {
-    this.setState({
-      isActive: false
-    });
-  };
-
-  EmojiIcon.prototype._openPicker = function _openPicker(e) {
-    e.preventDefault();
-    this.setState({
-      isActive: !this.state.isActive
-    });
-  };
 
   EmojiIcon.prototype.render = function render() {
     return React.createElement(
@@ -41,12 +39,12 @@ var EmojiIcon = function (_Component) {
       { className: 'sc-user-input--picker-wrapper' },
       this.state.isActive && React.createElement(EmojiPicker, {
         onEmojiPicked: this.props.onEmojiPicked,
-        onBlur: this._handlePickerBlur.bind(this)
+        onBlur: this._handlePickerBlur
       }),
       React.createElement(
         'button',
         {
-          onClick: this._openPicker.bind(this),
+          onClick: this._openPicker,
           className: 'sc-user-input--emoji-icon-wrapper'
         },
         React.createElement(
@@ -92,7 +90,5 @@ var EmojiIcon = function (_Component) {
 
   return EmojiIcon;
 }(Component);
-
-;
 
 export default EmojiIcon;

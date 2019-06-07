@@ -1,6 +1,6 @@
 {
   "name": "react-beautiful-chat",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A simple and beautiful React chat component backend agnostic and with Emoji and File support.",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "build": "nwb build-react-component --copy-files",
+    "build:watch": "nodemon -w src -x 'rm .babelrc &> /dev/null; nwb build-react-component --no-demo --copy-files'",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "test": "nwb test-react",
@@ -20,29 +21,39 @@
     "gh:publish": "nwb build-demo && gh-pages -d demo/dist"
   },
   "dependencies": {
+    "babel-eslint": "^10.0.1",
     "emoji-js": "3.2.2",
     "gh-pages": "^1.1.0",
     "lodash": "^4.17.5",
     "prop-types": "15.5.10",
     "react-highlight.js": "1.0.5",
-    "socket.io-client": "2.0.3"
+    "socket.io-client": "2.0.3",
+    "standard": "^12.0.1"
   },
   "peerDependencies": {
     "react": "15.x"
   },
   "devDependencies": {
+    "nodemon": "^1.18.10",
     "nwb": "0.17.x",
     "react": "15.6.1",
     "react-dom": "15.6.1"
   },
   "author": "",
-  "homepage": "https://mattmezza.github.io/react-beautiful-chat/",
+  "homepage": "https://github.com/corsi-it/react-beautiful-chat/",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mattmezza/react-beautiful-chat.git"
+    "url": "https://github.com/corsi-it/react-beautiful-chat.git"
   },
   "keywords": [
     "react-component"
-  ]
+  ],
+  "standard": {
+    "parser": "babel-eslint",
+    "globals": [
+      "Audio",
+      "localStorage"
+    ]
+  }
 }

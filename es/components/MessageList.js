@@ -26,10 +26,14 @@ var MessageList = function (_Component) {
     return React.createElement(
       'div',
       { className: 'sc-message-list', ref: function ref(el) {
-          return _this2.scrollList = el;
+          _this2.scrollList = el;
         } },
       this.props.messages.map(function (message, i) {
-        return React.createElement(Message, { message: message, key: i, onDelete: _this2.props.onDelete });
+        return React.createElement(Message, {
+          message: message,
+          key: i,
+          classes: _this2.props.messageClassesBuilder ? _this2.props.messageClassesBuilder(message, i, _this2.props.messages) : [],
+          onDelete: _this2.props.onDelete });
       })
     );
   };

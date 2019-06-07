@@ -9,54 +9,87 @@ import React, { Component } from 'react';
 import ChatWindow from './ChatWindow';
 import launcherIcon from './../assets/logo-no-bg.svg';
 import launcherIconActive from './../assets/close-icon.png';
+import incomingMessageSound from './../assets/sounds/notification.mp3';
 
 var Launcher = function (_Component) {
   _inherits(Launcher, _Component);
 
   function Launcher() {
+    var _temp, _this, _ret;
+
     _classCallCheck(this, Launcher);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.state = {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
       launcherIcon: launcherIcon,
       isOpen: false
-    };
-    return _this;
+    }, _this.notification = new Audio(incomingMessageSound), _this.handleClick = function () {
+      if (_this.props.handleClick !== undefined) {
+        _this.props.handleClick();
+      } else {
+        _this.setState({
+          isOpen: !_this.state.isOpen
+        });
+      }
+    }, _this.handleMessageWasReceived = function () {
+      if (!_this.props.mute) {
+        _this.notification.play();
+      }
+      if (_this.props.onMessageWasReceived) {
+        _this.props.onMessageWasReceived();
+      }
+    }, _this.isOpened = function () {
+      return _this.props.hasOwnProperty('isOpen') ? _this.props.isOpen : _this.state.isOpen;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  Launcher.prototype.handleClick = function handleClick() {
-    if (this.props.handleClick !== undefined) {
-      this.props.handleClick();
+  Launcher.prototype.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var messageWasReceived = false;
+    if (this.isOpened()) {
+      if (this.props.messageList.length > prevProps.messageList.length && this.props.messageList.slice(-1).author !== 'me') {
+        messageWasReceived = true;
+      }
     } else {
-      this.setState({
-        isOpen: !this.state.isOpen
-      });
+      if (this.props.newMessagesCount > prevProps.newMessagesCount) {
+        messageWasReceived = true;
+      }
+    }
+    if (messageWasReceived) {
+      this.handleMessageWasReceived();
     }
   };
 
   Launcher.prototype.render = function render() {
-    var isOpen = this.props.hasOwnProperty('isOpen') ? this.props.isOpen : this.state.isOpen;
+    var isOpen = this.isOpened();
+    var showLauncher = this.props.showLauncher;
+
     var classList = ['sc-launcher', isOpen ? 'opened' : ''];
     return React.createElement(
       'div',
       null,
-      React.createElement(
+      showLauncher && React.createElement(
         'div',
-        { className: classList.join(' '), onClick: this.handleClick.bind(this) },
+        { className: classList.join(' '), onClick: this.handleClick },
         React.createElement(MessageCount, { count: this.props.newMessagesCount, isOpen: isOpen }),
-        React.createElement('img', { className: "sc-open-icon", src: launcherIconActive }),
-        React.createElement('img', { className: "sc-closed-icon", src: launcherIcon })
+        React.createElement('img', { className: 'sc-open-icon', src: launcherIconActive }),
+        React.createElement('img', { className: 'sc-closed-icon', src: launcherIcon })
       ),
       React.createElement(ChatWindow, {
         messageList: this.props.messageList,
+        messageClassesBuilder: this.props.messageClassesBuilder,
         onUserInputSubmit: this.props.onMessageWasSent,
         agentProfile: this.props.agentProfile,
         isOpen: isOpen,
-        onClose: this.handleClick.bind(this),
+        readOnly: this.props.readOnly,
+        onTeamClick: this.props.onTeamClick,
+        onClose: this.handleClick,
         showEmoji: this.props.showEmoji,
         showFile: this.props.showFile,
         typing: this.props.typing,
+        buttons: this.props.buttons,
         onKeyPress: this.props.onKeyPress,
         onKeyPressDebounce: this.props.onKeyPressDebounce,
         onDelete: this.props.onDelete
@@ -73,27 +106,35 @@ var MessageCount = function MessageCount(props) {
   }
   return React.createElement(
     'div',
-    { className: "sc-new-messsages-count" },
+    { className: 'sc-new-messsages-count' },
     props.count
   );
 };
 
 Launcher.propTypes = process.env.NODE_ENV !== "production" ? {
+  showLauncher: PropTypes.bool,
   onMessageWasReceived: PropTypes.func,
   onMessageWasSent: PropTypes.func,
   newMessagesCount: PropTypes.number,
   isOpen: PropTypes.bool,
+  readOnly: PropTypes.bool,
   handleClick: PropTypes.func,
   messageList: PropTypes.arrayOf(PropTypes.object),
+  messageClassesBuilder: PropTypes.func,
   showEmoji: PropTypes.bool,
   showFile: PropTypes.bool,
   typing: PropTypes.string,
+  buttons: PropTypes.arrayOf(PropTypes.func),
   onKeyPress: PropTypes.func,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  mute: PropTypes.bool
 } : {};
 
 Launcher.defaultProps = {
-  newMessagesCount: 0
+  showLauncher: true,
+  newMessagesCount: 0,
+  readOnly: false,
+  mute: false
 };
 
 export default Launcher;

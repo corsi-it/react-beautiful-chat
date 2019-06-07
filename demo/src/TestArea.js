@@ -40,6 +40,24 @@ class TestArea extends Component {
               className="hideDefault" id='avatar' type="file" onChange={this.onChange}
             />
           </label>
+          <label>
+            Alert text for team click in the header (onTeamClick):
+            <input
+              className="hideDefault" id='teamAlert' type="text" onChange={(e) => this.props.onTeamTextChange(e.target.value)}
+            />
+          </label>
+          <label>
+            Disable input (readOnly)
+            <input
+              className="hideDefault" id='readOnly' type="checkbox" onChange={(e) => this.props.onReadOnlyChange(e.target.checked)}
+            />
+          </label>
+          <label>
+            Play sound for notification (mute)
+            <input
+                className="hideDefault" id='mute' type="checkbox" onChange={(e) => this.props.onMuteChange(e.target.checked)}
+            />
+          </label>
           <button className="demo-test-area--button"> Send Message! </button>
         </form>
         <p className="demo-test-area--info">

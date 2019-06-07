@@ -44,3 +44,7 @@ body {
   display: block;
   margin: 60px auto;
 }
+
+.odd-message {
+  background-color: yellowgreen;
+}

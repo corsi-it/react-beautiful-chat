@@ -1,5 +1,5 @@
 /*!
- * react-beautiful-chat v1.1.1 - https://mattmezza.github.io/react-beautiful-chat/
+ * react-beautiful-chat v1.2.0 - https://github.com/corsi-it/react-beautiful-chat/
  * MIT Licensed
  */
 .sc-emoji-picker {
@@ -289,12 +289,12 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  cursor: pointer;
   border-radius: 5px;
 }
 
-.sc-header--team-name:hover {
+.sc-header--team-name.clickable:hover {
   background: #4882ed;
+  cursor: pointer;
 }
 
 .sc-header--close-button {
@@ -506,14 +506,17 @@
 
 
 .sc-user-input--text {
-  width: 300px;
+  /*width: 300px;*/
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   resize: none;
   border: none;
   outline: none;
   border-bottom-left-radius: 10px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  padding: 18px;
+  padding: 18px 0 18px 18px;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.33;
@@ -536,17 +539,17 @@
 }
 
 .sc-user-input--buttons {
-  width: 100px;
-  position: absolute;
-  right: 30px;
+  /*width: 100px;*/
+  /*position: absolute;*/
+  /*right: 30px;*/
+  text-align: center;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
   height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-}
-
-.sc-user-input--button:first-of-type {
-  width: 40px;
 }
 
 .sc-user-input--button {
@@ -574,7 +577,9 @@
           box-shadow: 0px -5px 20px 0px rgba(150, 165, 190, 0.2);
 }
 
-.sc-user-input--send-icon, .sc-user-input--file-icon {
+.sc-user-input--send-icon,
+.sc-user-input--file-icon,
+.sc-user-input--emoji-icon {
   height: 20px;
   width: 20px;
   cursor: pointer;
@@ -654,11 +659,11 @@
   margin-right: 5px;
 }
 
-.sc-user-input--send-icon path, .sc-user-input--file-icon path {
+.sc-user-input--send-icon path, .sc-user-input--file-icon path, .sc-user-input--emoji-icon * {
   fill: rgba(86, 88, 103, 0.3);
 }
 
-.sc-user-input--send-icon:hover path, .sc-user-input--file-icon:hover path {
+.sc-user-input--send-icon:hover path, .sc-user-input--file-icon:hover path, .sc-user-input--emoji-icon:hover * {
   fill: rgba(86, 88, 103, 1);
 }
 
@@ -670,28 +675,4 @@
   padding: 0px;
   margin: 0px;
   outline: none;
-}
-
-.sc-user-input--emoji-icon-wrapper:focus {
-  outline: none;
-}
-
-.sc-user-input--emoji-icon {
-  height: 18px;
-  cursor: pointer;
-  -ms-flex-item-align: center;
-      align-self: center;
-}
-
-.sc-user-input--emoji-icon path, .sc-user-input--emoji-icon circle {
-  fill: rgba(86, 88, 103, 0.3);
-}
-
-.sc-user-input--emoji-icon-wrapper:focus .sc-user-input--emoji-icon path,
-.sc-user-input--emoji-icon-wrapper:focus .sc-user-input--emoji-icon circle,
-.sc-user-input--emoji-icon.active path,
-.sc-user-input--emoji-icon.active circle,
-.sc-user-input--emoji-icon:hover path,
-.sc-user-input--emoji-icon:hover circle {
-  fill: rgba(86, 88, 103, 1);
 }

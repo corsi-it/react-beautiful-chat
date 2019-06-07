@@ -14,31 +14,35 @@ var Message = function (_Component) {
   _inherits(Message, _Component);
 
   function Message() {
+    var _temp, _this, _ret;
+
     _classCallCheck(this, Message);
 
-    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this._renderMessageOfType = function (type) {
+      switch (type) {
+        case 'text':
+          return React.createElement(TextMessage, { message: _this.props.message, onDelete: _this.props.onDelete });
+        case 'emoji':
+          return React.createElement(EmojiMessage, _this.props.message);
+        case 'file':
+          return React.createElement(FileMessage, { message: _this.props.message, onDelete: _this.props.onDelete });
+      }
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  Message.prototype._renderMessageOfType = function _renderMessageOfType(type) {
-    switch (type) {
-      case 'text':
-        return React.createElement(TextMessage, { message: this.props.message, onDelete: this.props.onDelete });
-      case 'emoji':
-        return React.createElement(EmojiMessage, this.props.message);
-      case 'file':
-        return React.createElement(FileMessage, { onDelete: this.props.onDelete, message: this.props.message });
-    }
-  };
-
   Message.prototype.render = function render() {
-    var contentClassList = ["sc-message--content", this.props.message.author === "me" ? "sent" : "received"];
+    var contentClassList = ['sc-message--content', this.props.message.author === 'me' ? 'sent' : 'received'].concat(this.props.classes || []);
     var authorAvatarUrl = this.props.message.author_avatar || chatIconUrl;
     return React.createElement(
       'div',
       { className: 'sc-message' },
       React.createElement(
         'div',
-        { className: contentClassList.join(" ") },
+        { className: contentClassList.join(' ') },
         React.createElement('div', {
           className: 'sc-message--avatar',
           title: this.props.message.author,

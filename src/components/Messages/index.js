@@ -4,31 +4,30 @@ import EmojiMessage from './EmojiMessage'
 import FileMessage from './FileMessage'
 import chatIconUrl from './../../assets/chat-icon.svg'
 
-
 class Message extends Component {
-
-  _renderMessageOfType(type) {
+  _renderMessageOfType = (type) => {
     switch (type) {
       case 'text':
         return <TextMessage message={this.props.message} onDelete={this.props.onDelete} />
       case 'emoji':
         return <EmojiMessage {...this.props.message} />
       case 'file':
-        return <FileMessage onDelete={this.props.onDelete} message={this.props.message} />
+        return <FileMessage message={this.props.message} onDelete={this.props.onDelete} />
     }
   }
 
-  render() {
+  render () {
     let contentClassList = [
-      "sc-message--content",
-      (this.props.message.author === "me" ? "sent" : "received")
-    ];
+      'sc-message--content',
+      (this.props.message.author === 'me' ? 'sent' : 'received'),
+      ...this.props.classes || []
+    ]
     let authorAvatarUrl = this.props.message.author_avatar || chatIconUrl
     return (
-      <div className="sc-message">
-        <div className={contentClassList.join(" ")}>
+      <div className='sc-message'>
+        <div className={contentClassList.join(' ')}>
           <div
-            className="sc-message--avatar"
+            className='sc-message--avatar'
             title={this.props.message.author}
             style={{
               backgroundImage: `url(${authorAvatarUrl})`

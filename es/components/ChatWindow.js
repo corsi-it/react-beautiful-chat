@@ -13,44 +13,48 @@ import Header from './Header';
 var ChatWindow = function (_Component) {
   _inherits(ChatWindow, _Component);
 
-  function ChatWindow(props) {
+  function ChatWindow() {
+    var _temp, _this, _ret;
+
     _classCallCheck(this, ChatWindow);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.onUserInputSubmit = function (message) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.onUserInputSubmit = function (message) {
       _this.props.onUserInputSubmit(message);
-    };
-
-    return _this;
+    }, _this.onMessageReceived = function (message) {
+      _this.setState({ messages: [].concat(_this.state.messages, [message]) });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
-
-  ChatWindow.prototype.onMessageReceived = function onMessageReceived(message) {
-    this.setState({ messages: [].concat(this.state.messages, [message]) });
-  };
 
   ChatWindow.prototype.render = function render() {
     var messageList = this.props.messageList || [];
-    var classList = ["sc-chat-window", this.props.isOpen ? "opened" : "closed"];
+    var classList = ['sc-chat-window', this.props.isOpen ? 'opened' : 'closed'];
     return React.createElement(
       'div',
       { className: classList.join(' ') },
       React.createElement(Header, {
         teamName: this.props.agentProfile.teamName,
         imageUrl: this.props.agentProfile.imageUrl,
+        onTeamClick: this.props.onTeamClick,
         onClose: this.props.onClose
       }),
       React.createElement(MessageList, {
         messages: messageList,
+        messageClassesBuilder: this.props.messageClassesBuilder,
         imageUrl: this.props.agentProfile.imageUrl,
-        onDelete: this.props.onDelete
+        onDelete: this.props.readOnly ? null : this.props.onDelete
       }),
       React.createElement(UserInput, {
         showEmoji: this.props.showEmoji,
         onSubmit: this.onUserInputSubmit,
         showFile: this.props.showFile,
         onKeyPress: this.props.onKeyPress,
-        typing: this.props.typing
+        typing: this.props.typing,
+        readOnly: this.props.readOnly,
+        buttons: this.props.buttons
       })
     );
   };
@@ -64,10 +68,14 @@ ChatWindow.propTypes = process.env.NODE_ENV !== "production" ? {
     imageUrl: PropTypes.string
   }),
   isOpen: PropTypes.bool,
+  readOnly: PropTypes.bool,
   messageList: PropTypes.arrayOf(PropTypes.object),
+  messageClassesBuilder: PropTypes.func,
   showEmoji: PropTypes.bool,
   showFile: PropTypes.bool,
   typing: PropTypes.string,
+  buttons: PropTypes.arrayOf(PropTypes.func),
+  onTeamClick: PropTypes.func,
   onClose: PropTypes.func,
   onDelete: PropTypes.func,
   onKeyPress: PropTypes.func,

@@ -1,6 +1,5 @@
-import React from 'react';
-import genericFileIcon from '../../assets/file.svg';
-import closeIcon from '../../assets/close.svg'
+import React from 'react'
+import genericFileIcon from '../../assets/file.svg'
 
 const FileMessage = (props) => {
   const meta = props.message.data.meta || null
@@ -10,11 +9,11 @@ const FileMessage = (props) => {
   return (
     <div className='sc-message--file' >
       {
-        props.message && 
-        author === "me" && 
-        props.onDelete && 
+        props.message &&
+        author === 'me' &&
+        props.onDelete &&
           <button className='delete-message' onClick={() => props.onDelete(props.message)}>
-            x
+              x
           </button>
       }
       <div className='sc-message--file-icon'>

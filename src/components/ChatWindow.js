@@ -4,37 +4,34 @@ import MessageList from './MessageList'
 import UserInput from './UserInput'
 import Header from './Header'
 
-
 class ChatWindow extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   onUserInputSubmit = (message) => {
     this.props.onUserInputSubmit(message)
   }
 
-  onMessageReceived(message) {
+  onMessageReceived = (message) => {
     this.setState({ messages: [...this.state.messages, message] })
   }
 
-  render() {
+  render () {
     let messageList = this.props.messageList || []
     let classList = [
-      "sc-chat-window",
-      (this.props.isOpen ? "opened" : "closed")
+      'sc-chat-window',
+      (this.props.isOpen ? 'opened' : 'closed')
     ]
     return (
       <div className={classList.join(' ')}>
         <Header
           teamName={this.props.agentProfile.teamName}
           imageUrl={this.props.agentProfile.imageUrl}
+          onTeamClick={this.props.onTeamClick}
           onClose={this.props.onClose}
         />
         <MessageList
           messages={messageList}
+          messageClassesBuilder={this.props.messageClassesBuilder}
           imageUrl={this.props.agentProfile.imageUrl}
-          onDelete={this.props.onDelete}
+          onDelete={this.props.readOnly ? null : this.props.onDelete}
         />
         <UserInput
           showEmoji={this.props.showEmoji}
@@ -42,6 +39,8 @@ class ChatWindow extends Component {
           showFile={this.props.showFile}
           onKeyPress={this.props.onKeyPress}
           typing={this.props.typing}
+          readOnly={this.props.readOnly}
+          buttons={this.props.buttons}
         />
       </div>
     )
@@ -54,10 +53,14 @@ ChatWindow.propTypes = {
     imageUrl: PropTypes.string
   }),
   isOpen: PropTypes.bool,
+  readOnly: PropTypes.bool,
   messageList: PropTypes.arrayOf(PropTypes.object),
+  messageClassesBuilder: PropTypes.func,
   showEmoji: PropTypes.bool,
   showFile: PropTypes.bool,
   typing: PropTypes.string,
+  buttons: PropTypes.arrayOf(PropTypes.func),
+  onTeamClick: PropTypes.func,
   onClose: PropTypes.func,
   onDelete: PropTypes.func,
   onKeyPress: PropTypes.func,
