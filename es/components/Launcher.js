@@ -84,7 +84,6 @@ var Launcher = function (_Component) {
         agentProfile: this.props.agentProfile,
         isOpen: isOpen,
         readOnly: this.props.readOnly,
-        onTeamClick: this.props.onTeamClick,
         onClose: this.handleClick,
         showEmoji: this.props.showEmoji,
         showFile: this.props.showFile,

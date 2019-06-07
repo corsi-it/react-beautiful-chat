@@ -1,5 +1,5 @@
 /*!
- * react-beautiful-chat v1.2.0 - https://github.com/corsi-it/react-beautiful-chat/
+ * react-beautiful-chat v1.2.1 - https://github.com/corsi-it/react-beautiful-chat/
  * MIT Licensed
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -377,6 +377,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__MessageList__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__UserInput__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Header__ = __webpack_require__(11);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -414,12 +416,9 @@ var ChatWindow = function (_Component) {
     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
       'div',
       { className: classList.join(' ') },
-      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Header__["a" /* default */], {
-        teamName: this.props.agentProfile.teamName,
-        imageUrl: this.props.agentProfile.imageUrl,
-        onTeamClick: this.props.onTeamClick,
+      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Header__["a" /* default */], _extends({}, this.props.agentProfile, {
         onClose: this.props.onClose
-      }),
+      })),
       __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__MessageList__["a" /* default */], {
         messages: messageList,
         messageClassesBuilder: this.props.messageClassesBuilder,
@@ -444,7 +443,8 @@ var ChatWindow = function (_Component) {
 ChatWindow.propTypes = {
   agentProfile: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
     teamName: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    imageUrl: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string
+    imageUrl: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
+    teamUrl: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string
   }),
   isOpen: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
   readOnly: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
@@ -454,7 +454,6 @@ ChatWindow.propTypes = {
   showFile: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
   typing: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
   buttons: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func),
-  onTeamClick: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   onClose: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   onDelete: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   onKeyPress: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
@@ -491,17 +490,19 @@ var Header = function (_Component) {
   }
 
   Header.prototype.render = function render() {
-    var teamNameClasses = ['sc-header--team-name'];
-    if (this.props.onTeamClick) {
-      teamNameClasses.push('clickable');
-    }
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'sc-header' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'sc-header--img', src: this.props.imageUrl, alt: '' }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      this.props.teamUrl ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'a',
+        { href: this.props.teamUrl, className: 'sc-header--team-name' },
+        ' ',
+        this.props.teamName,
+        ' '
+      ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { className: teamNameClasses.join(' '), onClick: this.props.onTeamClick },
+        { className: 'sc-header--team-name' },
         ' ',
         this.props.teamName,
         ' '
@@ -621,7 +622,6 @@ var Launcher = function (_Component) {
         agentProfile: this.props.agentProfile,
         isOpen: isOpen,
         readOnly: this.props.readOnly,
-        onTeamClick: this.props.onTeamClick,
         onClose: this.handleClick,
         showEmoji: this.props.showEmoji,
         showFile: this.props.showFile,

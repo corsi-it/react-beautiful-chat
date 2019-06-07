@@ -1,5 +1,5 @@
 /*!
- * react-beautiful-chat v1.2.0 - https://github.com/corsi-it/react-beautiful-chat/
+ * react-beautiful-chat v1.2.1 - https://github.com/corsi-it/react-beautiful-chat/
  * MIT Licensed
  */
 .sc-emoji-picker {
@@ -292,7 +292,12 @@
   border-radius: 5px;
 }
 
-.sc-header--team-name.clickable:hover {
+a.sc-header--team-name {
+  color: white;
+  text-decoration: none;
+}
+
+a.sc-header--team-name:hover {
   background: #4882ed;
   cursor: pointer;
 }

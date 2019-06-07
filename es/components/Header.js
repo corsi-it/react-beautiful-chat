@@ -17,17 +17,19 @@ var Header = function (_Component) {
   }
 
   Header.prototype.render = function render() {
-    var teamNameClasses = ['sc-header--team-name'];
-    if (this.props.onTeamClick) {
-      teamNameClasses.push('clickable');
-    }
     return React.createElement(
       'div',
       { className: 'sc-header' },
       React.createElement('img', { className: 'sc-header--img', src: this.props.imageUrl, alt: '' }),
-      React.createElement(
+      this.props.teamUrl ? React.createElement(
+        'a',
+        { href: this.props.teamUrl, className: 'sc-header--team-name' },
+        ' ',
+        this.props.teamName,
+        ' '
+      ) : React.createElement(
         'div',
-        { className: teamNameClasses.join(' '), onClick: this.props.onTeamClick },
+        { className: 'sc-header--team-name' },
         ' ',
         this.props.teamName,
         ' '
