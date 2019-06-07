@@ -148,11 +148,11 @@
   margin-right: 5px;
 }
 
-.sc-user-input--send-icon path, .sc-user-input--file-icon path, .sc-user-input--emoji-icon * {
+.sc-user-input--send-icon *, .sc-user-input--file-icon *, .sc-user-input--emoji-icon * {
   fill: rgba(86, 88, 103, 0.3);
 }
 
-.sc-user-input--send-icon:hover path, .sc-user-input--file-icon:hover path, .sc-user-input--emoji-icon:hover * {
+.sc-user-input--send-icon:hover *, .sc-user-input--file-icon:hover *, .sc-user-input--emoji-icon:hover * {
   fill: rgba(86, 88, 103, 1);
 }
 
