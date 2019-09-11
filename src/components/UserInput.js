@@ -23,6 +23,14 @@ class UserInput extends Component {
     this.props.onKeyPress(this.userInput.textContent)
   }, 300, { trailing: true })
 
+  handlePaste = (event) => {
+    event.preventDefault();
+    const text = (event.originalEvent || event).clipboardData.getData(
+      "text/plain"
+    );
+    this.userInput.textContent = text;
+  }
+
   _submitText = (event) => {
     event.preventDefault()
     if (this.props.readOnly) {
@@ -91,6 +99,7 @@ class UserInput extends Component {
             ref={(e) => { this.userInput = e }}
             onKeyDown={this.handleKey}
             onKeyPress={this.handleKeyPress}
+            onPaste={this.handlePaste}
             contentEditable={!this.props.readOnly}
             suppressContentEditableWarning='true'
             placeholder={this.props.readOnly ? 'Read only' : 'Write a reply...'}
