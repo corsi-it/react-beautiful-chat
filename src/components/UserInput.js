@@ -28,7 +28,7 @@ class UserInput extends Component {
     const text = (event.originalEvent || event).clipboardData.getData(
       "text/plain"
     );
-    document.execCommand("insertText", false, text);
+    document.execCommand("insertHTML", false, text);
   }
 
   _submitText = (event) => {

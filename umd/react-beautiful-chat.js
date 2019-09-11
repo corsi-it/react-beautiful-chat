@@ -1,5 +1,5 @@
 /*!
- * react-beautiful-chat v1.2.4 - https://github.com/corsi-it/react-beautiful-chat/
+ * react-beautiful-chat v1.2.5 - https://github.com/corsi-it/react-beautiful-chat/
  * MIT Licensed
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -972,7 +972,7 @@ var UserInput = function (_Component) {
     }, 300, { trailing: true }), _this.handlePaste = function (event) {
       event.preventDefault();
       var text = (event.originalEvent || event).clipboardData.getData("text/plain");
-      document.execCommand("insertText", false, text);
+      document.execCommand("insertHTML", false, text);
     }, _this._submitText = function (event) {
       event.preventDefault();
       if (_this.props.readOnly) {
