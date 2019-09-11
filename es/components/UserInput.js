@@ -34,7 +34,11 @@ var UserInput = function (_Component) {
       }
     }, _this.handleKeyPress = _.debounce(function () {
       _this.props.onKeyPress(_this.userInput.textContent);
-    }, 300, { trailing: true }), _this._submitText = function (event) {
+    }, 300, { trailing: true }), _this.handlePaste = function (event) {
+      event.preventDefault();
+      var text = (event.originalEvent || event).clipboardData.getData("text/plain");
+      _this.userInput.textContent = text;
+    }, _this._submitText = function (event) {
       event.preventDefault();
       if (_this.props.readOnly) {
         return;
@@ -121,6 +125,7 @@ var UserInput = function (_Component) {
             },
             onKeyDown: this.handleKey,
             onKeyPress: this.handleKeyPress,
+            onPaste: this.handlePaste,
             contentEditable: !this.props.readOnly,
             suppressContentEditableWarning: 'true',
             placeholder: this.props.readOnly ? 'Read only' : 'Write a reply...',

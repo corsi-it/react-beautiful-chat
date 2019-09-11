@@ -1,5 +1,5 @@
 /*!
- * react-beautiful-chat v1.2.2 - https://github.com/corsi-it/react-beautiful-chat/
+ * react-beautiful-chat v1.2.3 - https://github.com/corsi-it/react-beautiful-chat/
  * MIT Licensed
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -969,7 +969,11 @@ var UserInput = function (_Component) {
       }
     }, _this.handleKeyPress = __WEBPACK_IMPORTED_MODULE_7_lodash___default.a.debounce(function () {
       _this.props.onKeyPress(_this.userInput.textContent);
-    }, 300, { trailing: true }), _this._submitText = function (event) {
+    }, 300, { trailing: true }), _this.handlePaste = function (event) {
+      event.preventDefault();
+      var text = (event.originalEvent || event).clipboardData.getData("text/plain");
+      _this.userInput.textContent = text;
+    }, _this._submitText = function (event) {
       event.preventDefault();
       if (_this.props.readOnly) {
         return;
@@ -1056,6 +1060,7 @@ var UserInput = function (_Component) {
             },
             onKeyDown: this.handleKey,
             onKeyPress: this.handleKeyPress,
+            onPaste: this.handlePaste,
             contentEditable: !this.props.readOnly,
             suppressContentEditableWarning: 'true',
             placeholder: this.props.readOnly ? 'Read only' : 'Write a reply...',
