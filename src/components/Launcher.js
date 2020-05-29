@@ -40,7 +40,14 @@ class Launcher extends Component {
 
   handleMessageWasReceived = () => {
     if (!this.props.mute) {
-      this.notification.play()
+      var playPromise = this.notification.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.error('cannot play sound')
+        }).then(() => {
+            // Auto-play started
+        });
+      }
     }
     if (this.props.onMessageWasReceived) {
       this.props.onMessageWasReceived()

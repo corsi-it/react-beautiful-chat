@@ -36,7 +36,14 @@ var Launcher = function (_Component) {
       }
     }, _this.handleMessageWasReceived = function () {
       if (!_this.props.mute) {
-        _this.notification.play();
+        var playPromise = _this.notification.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(function (error) {
+            console.error('cannot play sound');
+          }).then(function () {
+            // Auto-play started
+          });
+        }
       }
       if (_this.props.onMessageWasReceived) {
         _this.props.onMessageWasReceived();

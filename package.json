@@ -1,6 +1,6 @@
 {
   "name": "react-beautiful-chat",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "A simple and beautiful React chat component backend agnostic and with Emoji and File support.",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "emoji-js": "3.2.2",
-    "lodash": "^4.17.5",    
+    "lodash": "^4.17.5",
     "react-highlight.js": "1.0.5",
     "socket.io-client": "2.0.3"
   },
